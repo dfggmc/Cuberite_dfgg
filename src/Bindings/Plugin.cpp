@@ -21,7 +21,7 @@ cPlugin::cPlugin(const AString & a_FolderName) :
 
 cPlugin::~cPlugin()
 {
-	LOGD("Destroying plugin \"%s\".", m_Name.c_str());
+	LOGD("销毁插件 \"%s\".", m_Name.c_str());
 }
 
 
