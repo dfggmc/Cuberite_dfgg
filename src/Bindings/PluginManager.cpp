@@ -156,7 +156,6 @@ void cPluginManager::InsertDefaultPlugins(cSettingsRepositoryInterface & a_Setti
 	a_Settings.AddKeyName("Plugins");
 	a_Settings.AddValue("Plugins", "Core", "1");
 	a_Settings.AddValue("Plugins", "ChatLog", "1");
-    a_Settings.AddValue("Plugins", "Essentials", "1");
 	a_Settings.AddValue("Plugins", "ProtectionAreas", "0");
 }
 
