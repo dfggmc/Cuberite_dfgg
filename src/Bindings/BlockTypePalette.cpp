@@ -179,7 +179,7 @@ void BlockTypePalette::loadFromJsonString(const AString & aJsonPalette)
 	// Sanity-check the JSON's structure:
 	if (!root.isObject())
 	{
-		throw LoadFailedException("Incorrect palette format, expected an object at root.");
+		throw LoadFailedException("调色板格式不正确，需要根目录下的对象。");
 	}
 
 	// Load the palette:
@@ -189,7 +189,7 @@ void BlockTypePalette::loadFromJsonString(const AString & aJsonPalette)
 		const auto & states = (*itr)["states"];
 		if (states == Json::Value())
 		{
-			throw LoadFailedException(fmt::format(FMT_STRING("Missing \"states\" for block type \"{}\""), blockTypeName));
+			throw LoadFailedException(fmt::format(FMT_STRING("缺少块类型 \"{}\" 的 \"states\""), blockTypeName));
 		}
 		for (const auto & state: states)
 		{
@@ -200,7 +200,7 @@ void BlockTypePalette::loadFromJsonString(const AString & aJsonPalette)
 				const auto & properties = state["properties"];
 				if (!properties.isObject())
 				{
-					throw LoadFailedException(fmt::format(FMT_STRING("Member \"properties\" is not a JSON object (block type \"{}\", id {})."), blockTypeName, id));
+					throw LoadFailedException(fmt::format(FMT_STRING("成员 \"properties\" 不是 JSON 对象（块类型 \"{}\"， id {}）。"), blockTypeName, id));
 				}
 				for (const auto & key: properties.getMemberNames())
 				{
@@ -225,13 +225,13 @@ void BlockTypePalette::loadFromTsv(const AString & aTsvPalette, bool aIsUpgrade)
 	auto idx = findNextSeparator(aTsvPalette);
 	if ((idx == AString::npos) || (aTsvPalette[idx] == '\t'))
 	{
-		throw LoadFailedException("Invalid signature");
+		throw LoadFailedException("签名无效");
 	}
 	auto signature = aTsvPalette.substr(0, idx);
 	bool isUpgrade = (signature == hdrTsvUpgrade);
 	if (!isUpgrade && (signature != hdrTsvRegular))
 	{
-		throw LoadFailedException("Unknown signature");
+		throw LoadFailedException("未知签名");
 	}
 	if (aTsvPalette[idx] == '\r')   // CR of the CRLF pair, skip the LF:
 	{
@@ -249,7 +249,7 @@ void BlockTypePalette::loadFromTsv(const AString & aTsvPalette, bool aIsUpgrade)
 		auto keyEnd = findNextSeparator(aTsvPalette, idx + 1);
 		if (keyEnd == AString::npos)
 		{
-			throw LoadFailedException(fmt::format(FMT_STRING("Invalid header key format on line {}"), line));
+			throw LoadFailedException(fmt::format(FMT_STRING("行 {} 上的标头键格式无效"), line));
 		}
 		if (keyEnd == idx + 1)  // Empty line, end of headers
 		{
@@ -264,7 +264,7 @@ void BlockTypePalette::loadFromTsv(const AString & aTsvPalette, bool aIsUpgrade)
 		auto valueEnd = findNextSeparator(aTsvPalette, keyEnd + 1);
 		if ((valueEnd == AString::npos) || (aTsvPalette[valueEnd] == '\t'))
 		{
-			throw LoadFailedException(fmt::format(FMT_STRING("Invalid header value format on line {}"), line));
+			throw LoadFailedException(fmt::format(FMT_STRING("行 {} 上的标头值格式无效"), line));
 		}
 		auto key = aTsvPalette.substr(keyStart, keyEnd - keyStart);
 		if (key == "FileVersion")
@@ -273,11 +273,11 @@ void BlockTypePalette::loadFromTsv(const AString & aTsvPalette, bool aIsUpgrade)
 			auto value = aTsvPalette.substr(keyEnd + 1, valueEnd - keyEnd - 1);
 			if (!StringToInteger(value, version))
 			{
-				throw LoadFailedException("Invalid FileVersion value");
+				throw LoadFailedException("无效的 FileVersion 值");
 			}
 			else if (version != 1)
 			{
-				throw LoadFailedException(fmt::format(FMT_STRING("Unknown FileVersion: {}. Only version 1 is supported."), version));
+				throw LoadFailedException(fmt::format(FMT_STRING("未知 FileVersion： {}.仅支持版本 1。"), version));
 			}
 			hasHadVersion = true;
 		}
@@ -294,7 +294,7 @@ void BlockTypePalette::loadFromTsv(const AString & aTsvPalette, bool aIsUpgrade)
 	}
 	if (!hasHadVersion)
 	{
-		throw LoadFailedException("No FileVersion value");
+		throw LoadFailedException("无 FileVersion 值");
 	}
 
 	// Parse the data:
@@ -304,12 +304,12 @@ void BlockTypePalette::loadFromTsv(const AString & aTsvPalette, bool aIsUpgrade)
 		auto idEnd = findNextSeparator(aTsvPalette, lineStart);
 		if ((idEnd == AString::npos) || (aTsvPalette[idEnd] != '\t'))
 		{
-			throw LoadFailedException(fmt::format(FMT_STRING("Incomplete data on line {} (id)"), line));
+			throw LoadFailedException(fmt::format(FMT_STRING("第 {} 行数据不完整 (id)"), line));
 		}
 		UInt32 id;
 		if (!StringToInteger(aTsvPalette.substr(lineStart, idEnd - lineStart), id))
 		{
-			throw LoadFailedException(fmt::format(FMT_STRING("Failed to parse id on line {}"), line));
+			throw LoadFailedException(fmt::format(FMT_STRING("无法解析行 {} 上的 id"), line));
 		}
 		size_t metaEnd = idEnd;
 		if (isUpgrade)
@@ -317,23 +317,23 @@ void BlockTypePalette::loadFromTsv(const AString & aTsvPalette, bool aIsUpgrade)
 			metaEnd = findNextSeparator(aTsvPalette, idEnd + 1);
 			if ((metaEnd == AString::npos) || (aTsvPalette[metaEnd] != '\t'))
 			{
-				throw LoadFailedException(fmt::format(FMT_STRING("Incomplete data on line {} (meta)"), line));
+				throw LoadFailedException(fmt::format(FMT_STRING("行数据不完整 {} (meta)"), line));
 			}
 			UInt32 meta = 0;
 			if (!StringToInteger(aTsvPalette.substr(idEnd + 1, metaEnd - idEnd - 1), meta))
 			{
-				throw LoadFailedException(fmt::format(FMT_STRING("Failed to parse meta on line {}"), line));
+				throw LoadFailedException(fmt::format(FMT_STRING("无法解析联机 {} 上的元"), line));
 			}
 			if (meta > 15)
 			{
-				throw LoadFailedException(fmt::format(FMT_STRING("Invalid meta value on line {}: {}"), line, meta));
+				throw LoadFailedException(fmt::format(FMT_STRING("行 {} 上的元值无效：{}"), line, meta));
 			}
 			id = (id * 16) | meta;
 		}
 		auto blockTypeEnd = findNextSeparator(aTsvPalette, metaEnd + 1);
 		if (blockTypeEnd == AString::npos)
 		{
-			throw LoadFailedException(fmt::format(FMT_STRING("Incomplete data on line {} (blockTypeName)"), line));
+			throw LoadFailedException(fmt::format(FMT_STRING("行 {} 上的数据不完整 (blockTypeName)"), line));
 		}
 		auto blockTypeName = aTsvPalette.substr(metaEnd + 1, blockTypeEnd - metaEnd - 1);
 		auto blockStateEnd = blockTypeEnd;
@@ -343,12 +343,12 @@ void BlockTypePalette::loadFromTsv(const AString & aTsvPalette, bool aIsUpgrade)
 			auto keyEnd = findNextSeparator(aTsvPalette, blockStateEnd + 1);
 			if ((keyEnd == AString::npos) || (aTsvPalette[keyEnd] != '\t'))
 			{
-				throw LoadFailedException(fmt::format(FMT_STRING("Incomplete data on line {} (blockState key)"), line));
+				throw LoadFailedException(fmt::format(FMT_STRING("行 {} 上的数据不完整(blockState Key)"), line));
 			}
 			auto valueEnd = findNextSeparator(aTsvPalette, keyEnd + 1);
 			if (valueEnd == AString::npos)
 			{
-				throw LoadFailedException(fmt::format(FMT_STRING("Incomplete data on line {} (blockState value)"), line));
+				throw LoadFailedException(fmt::format(FMT_STRING("行 {} 上的数据不完整（blockState value）"), line));
 			}
 			auto key = aTsvPalette.substr(blockStateEnd + 1, keyEnd - blockStateEnd - 1);
 			auto value = aTsvPalette.substr(keyEnd + 1, valueEnd - keyEnd - 1);
