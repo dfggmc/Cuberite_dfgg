@@ -3,69 +3,69 @@
 [![Jenkins Build Status](https://img.shields.io/jenkins/build?jobUrl=https%3A%2F%2Fbuilds.cuberite.org%2Fjob%2Fcuberite%2Fjob%2Fmaster&label=Jenkins)](https://builds.cuberite.org/job/cuberite/job/master/)
 [![AppVeyor Build Status](https://img.shields.io/appveyor/ci/cuberite/cuberite/master.svg?label=AppVeyor)](https://ci.appveyor.com/project/cuberite/cuberite)
 
-Cuberite is a Minecraft-compatible multiplayer game server that is written in C++ and designed to be efficient with memory and CPU, as well as having a flexible Lua Plugin API. Cuberite is compatible with the Java Edition Minecraft client.
+Cuberite是一个Minecraft兼容的多人游戏服务器，它是用C++编写的，旨在提高内存和CPU的效率，并具有灵活的Lua插件API。Cuberite与Java版Minecraft客户端兼容。
 
-Cuberite runs on Windows, *nix and Android operating systems. This includes Android phones and tablets as well as Raspberry Pis; support for small embedded devices is experimental.
+Cuberite可在Windows、*nix和Android操作系统上运行。这包括Android手机和平板电脑以及树莓派;对小型嵌入式设备的支持是实验性的。
 
-Currently we support Release 1.8 - 1.12.2 Minecraft protocol versions.
+目前我们支持Release 1.8 - 1.12.2 Minecraft协议版本。
 
-Subscribe to [the newsletter][1] for important updates and project news.
+Subscribe to [the newsletter][1] for important updates and project news.订阅 [时事通讯][1] 获取重要更新和项目新闻。
 
-## Installation
+## 安装
 
-There are several ways to obtain Cuberite.
+有几种方法可以获得Cuberite。
 
-### Binaries
+### 二进制
 
-- The easiest method is downloading for Windows or Linux from the [website][2].
-- You can use the EasyInstall script for Linux and macOS, which automatically downloads the correct binary. The script is described below.
+- 最简单的方法是从[网站][2]下载Windows或Linux。
+- 您可以使用适用于Linux和macOS的EasyInstall脚本，它会自动下载正确的二进制文件。该脚本如下所述。
 
-#### The EasyInstall script
+#### 简单安装
 
-This script will download the correct binary from the project site.
+此脚本将从项目站点下载正确的二进制文件。
 
     curl -sSfL https://download.cuberite.org | sh
 
-### Compiling
+### 编译
 
-- You can compile automatically for Linux, macOS and FreeBSD with the `compile.sh` script. The script is described below.
-- You can also compile manually. See [COMPILING.md][4].
+- 您可以使用“compile.sh”脚本自动编译Linux、macOS和FreeBSD。该脚本如下所述。
+- 您也可以手动编译。看 [COMPILING.md][4].
 
-Compiling may provide better performance (1.5-3x as fast) and it supports more operating systems.
+编译可以提供更好的性能（1.5- 3倍的速度），并支持更多的操作系统。
 
-#### The compile.sh script
+#### compile.sh脚本
 
-This script downloads the source code and compiles it. The script is smart enough to notify you of missing dependencies and instructing you on how to install them. The script doesn't work for Windows.
+该脚本下载源代码并编译它。该脚本足够智能，可以通知您缺少依赖项并指导您如何安装它们。该脚本不适用于Windows。
 
-Using curl:
+使用curl:
 
     sh -c "$(curl -sSfL -o - https://compile.cuberite.org)"
 
-Or using wget:
+或者使用wget:
 
     sh -c "$(wget -O - https://compile.cuberite.org)"
 
-### Hosted services
+### 托管服务
 
-- Hosted Cuberite is available via [Gamocosm][5].
+- 托管Cuberite可通过 [Gamocosm][5].
 
-## Contributing
+## 贡献
 
-Cuberite is licensed under the Apache License V2, and we welcome anybody to fork and submit a Pull Request back with their changes, and if you want to join as a permanent member we can add you to the team.
+Cuberite是在Apache License V2下授权的，我们欢迎任何人分叉并提交一个Pull Request，如果你想加入成为永久成员，我们可以将你添加到团队中。
 
-Cuberite is developed in C++ and Lua. To contribute code, please check out [GETTING-STARTED.md][6] and [CONTRIBUTING.md][7] for more details.
+Cuberite使用C++和Lua开发。要贡献代码，请查看[GETTING-STARTED.md][6]和[CONTRIBUTING.md][7]了解更多详细信息。
 
-Plugins are written in Lua. You can contribute by developing plugins and submitting them to the [plugin repository][8] or the [forum][9]. Please check out our [plugin introduction guide][10] for more info.
+插件是用Lua编写的。您可以通过开发插件并将其提交到[插件存储库][8]或[论坛][9]来贡献。请查看我们的[插件介绍指南][10]了解更多信息。
 
-If you are not a programmer, you can help by testing Cuberite and reporting bugs. See [TESTING.md][11] for details.
+如果您不是程序员，您可以通过测试Cuberite和报告错误来提供帮助。详情请参阅[TESTING.md][11]。
 
-You can also help with documentation by contributing to the [User's Manual][12].
+您也可以通过为[用户手册][12]贡献内容来帮助文档编制。
 
-## Other Stuff
+## 其他东西
 
-For other stuff, check out the [homepage][13], the [Users' Manual][14], the [forums][15], and the [Plugin API][16].
+至于其他的东西，请查看[主页][13]，[用户手册][14]，[论坛][15]和[插件API][16]。
 
-Support the Cuberite development team on [Liberapay][17]
+在[Liberapay][17]支持Cuberite开发团队
 
 [1]: https://cuberite.org/news/#subscribe
 [2]: https://cuberite.org/
