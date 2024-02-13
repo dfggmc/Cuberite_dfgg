@@ -156,15 +156,15 @@ AString cLuaStateTracker::GetStats()
 		int Mem = 0;
 		if (!state->Call("collectgarbage", "count", cLuaState::Return, Mem))
 		{
-			res.append(fmt::format(FMT_STRING("Cannot query memory for state \"{}\"\n"), state->GetSubsystemName()));
+			res.append(fmt::format(FMT_STRING("无法查询内存中的状态 \"{}\"\n"), state->GetSubsystemName()));
 		}
 		else
 		{
-			res.append(fmt::format(FMT_STRING("State \"{}\" is using {} KiB of memory\n"), state->GetSubsystemName(), Mem));
+			res.append(fmt::format(FMT_STRING("状态 \"{}\" 正在使用 {} KiB 内存\n"), state->GetSubsystemName(), Mem));
 			Total += Mem;
 		}
 	}
-	res.append(fmt::format(FMT_STRING("Total memory used by Lua: {} KiB\n"), Total));
+	res.append(fmt::format(FMT_STRING("Lua 使用的总内存：{} KiB\n"), Total));
 	return res;
 }
 
@@ -294,7 +294,7 @@ void cLuaState::cTrackedRef::Invalidate(void)
 	cCSLock Lock(*cs);
 	if (!m_Ref.IsValid())
 	{
-		LOGD("%s: Inconsistent callback at %p, has a CS but an invalid Ref. This should not happen",
+		LOGD("%s：%p 处的回调不一致，具有 CS 但 Ref 无效。这不应该发生",
 			__FUNCTION__, static_cast<void *>(this)
 		);
 		return;
@@ -475,7 +475,7 @@ void cLuaState::Create(void)
 {
 	if (m_LuaState != nullptr)
 	{
-		LOGWARNING("%s: Trying to create an already-existing LuaState, ignoring.", __FUNCTION__);
+		LOGWARNING("%s：尝试创建已存在的 LuaState，忽略。", __FUNCTION__);
 		return;
 	}
 	m_LuaState = lua_open();
@@ -524,13 +524,13 @@ void cLuaState::Close(void)
 {
 	if (m_LuaState == nullptr)
 	{
-		LOGWARNING("%s: Trying to close an invalid LuaState, ignoring.", __FUNCTION__);
+		LOGWARNING("%s：尝试关闭无效的 LuaState，忽略。", __FUNCTION__);
 		return;
 	}
 	if (!m_IsOwned)
 	{
 		LOGWARNING(
-			"%s: Detected mis-use, calling Close() on an attached state (0x%p). Detaching instead.",
+			"%s：检测到误用，在附加状态 (0x%p) 上调用 Close()。而是分离。",
 			__FUNCTION__, static_cast<void *>(m_LuaState)
 		);
 		Detach();
@@ -562,7 +562,7 @@ void cLuaState::Attach(lua_State * a_State)
 {
 	if (m_LuaState != nullptr)
 	{
-		LOGINFO("%s: Already contains a LuaState (0x%p), will be closed / detached.", __FUNCTION__, static_cast<void *>(m_LuaState));
+		LOGINFO("%s：已包含一个 LuaState (0x%p)，将被关闭/分离。", __FUNCTION__, static_cast<void *>(m_LuaState));
 		if (m_IsOwned)
 		{
 			Close();
@@ -589,7 +589,7 @@ void cLuaState::Detach(void)
 	if (m_IsOwned)
 	{
 		LOGWARNING(
-			"%s: Detected a mis-use, calling Detach() when the state is owned. Closing the owned state (0x%p).",
+			"%s：检测到误用，在状态为所有者时调用 Detach()。关闭拥有状态 (0x%p)。",
 			__FUNCTION__, static_cast<void *>(m_LuaState)
 		);
 		Close();
@@ -639,7 +639,7 @@ bool cLuaState::LoadFile(const AString & a_FileName, bool a_LogWarnings)
 	{
 		if (a_LogWarnings)
 		{
-			LOGWARNING("Can't load %s because of a load error in file %s: %d (%s)", m_SubsystemName.c_str(), a_FileName.c_str(), s, lua_tostring(m_LuaState, -1));
+			LOGWARNING("由于文件 %s 中的加载错误，无法加载 %s: %d (%s)", m_SubsystemName.c_str(), a_FileName.c_str(), s, lua_tostring(m_LuaState, -1));
 		}
 		lua_pop(m_LuaState, 1);
 		return false;
@@ -651,7 +651,7 @@ bool cLuaState::LoadFile(const AString & a_FileName, bool a_LogWarnings)
 	{
 		if (a_LogWarnings)
 		{
-			LOGWARNING("Can't load %s because of an initialization error in file %s: %d (%s)", m_SubsystemName.c_str(), a_FileName.c_str(), s, lua_tostring(m_LuaState, -1));
+			LOGWARNING("无法加载 %s，因为文件 %s 中出现初始化错误： %d (%s)", m_SubsystemName.c_str(), a_FileName.c_str(), s, lua_tostring(m_LuaState, -1));
 		}
 		lua_pop(m_LuaState, 1);
 		return false;
@@ -675,7 +675,7 @@ bool cLuaState::LoadString(const AString & a_StringToLoad, const AString & a_Fil
 	{
 		if (a_LogWarnings)
 		{
-			LOGWARNING("Can't load %s because of a load error in string from \"%s\": %d (%s)", m_SubsystemName.c_str(), a_FileName.c_str(), s, lua_tostring(m_LuaState, -1));
+			LOGWARNING("无法加载 %s，因为 \"%s\" 中的字符串出现加载错误：%d (%s)", m_SubsystemName.c_str(), a_FileName.c_str(), s, lua_tostring(m_LuaState, -1));
 		}
 		lua_pop(m_LuaState, 1);
 		return false;
@@ -687,7 +687,7 @@ bool cLuaState::LoadString(const AString & a_StringToLoad, const AString & a_Fil
 	{
 		if (a_LogWarnings)
 		{
-			LOGWARNING("Can't load %s because of an initialization error in string from \"%s\": %d (%s)", m_SubsystemName.c_str(), a_FileName.c_str(), s, lua_tostring(m_LuaState, -1));
+			LOGWARNING("无法加载 %s，因为 \"%s\" 中的字符串出现初始化错误：%d (%s)", m_SubsystemName.c_str(), a_FileName.c_str(), s, lua_tostring(m_LuaState, -1));
 		}
 		lua_pop(m_LuaState, 1);
 		return false;
@@ -735,7 +735,7 @@ bool cLuaState::PushFunction(const char * a_FunctionName)
 	lua_getglobal(m_LuaState, a_FunctionName);
 	if (!lua_isfunction(m_LuaState, -1))
 	{
-		LOGWARNING("Error in %s: Could not find function %s()", m_SubsystemName.c_str(), a_FunctionName);
+		LOGWARNING("%s 中的错误：找不到函数 %s()", m_SubsystemName.c_str(), a_FunctionName);
 		lua_pop(m_LuaState, 2);
 		return false;
 	}
@@ -1631,13 +1631,13 @@ bool cLuaState::CallFunction(int a_NumResults)
 	if (s != 0)
 	{
 		// The error has already been printed together with the stacktrace
-		LOGWARNING("Error in %s calling function %s()", m_SubsystemName, CurrentFunctionName);
+		LOGWARNING("%s 调用函数 %s() 时出错", m_SubsystemName, CurrentFunctionName);
 
 		// Remove the error handler and error message from the stack:
 		auto top = lua_gettop(m_LuaState);
 		if (top < 2)
 		{
-			LogStackValues(fmt::format(FMT_STRING("The Lua stack is in an unexpected state, expected at least two values there, but got {}"), top).c_str());
+			LogStackValues(fmt::format(FMT_STRING("Lua 堆栈处于意外状态，预计至少有两个值，但得到 {}"), top).c_str());
 		}
 		lua_pop(m_LuaState, std::min(2, top));
 		return false;
@@ -1875,7 +1875,7 @@ bool cLuaState::CheckParamFunction(int a_StartParam, int a_EndParam)
 		lua_Debug entry;
 		VERIFY(lua_getstack(m_LuaState, 0,   &entry));
 		VERIFY(lua_getinfo (m_LuaState, "n", &entry));
-		luaL_error(m_LuaState, "Error in function '%s' parameter #%d. Function expected, got %s",
+		luaL_error(m_LuaState, "函数 '%s' 参数 #%d 中的错误。函数预期，得到 %s",
 			(entry.name != nullptr) ? entry.name : "?", i, GetTypeText(i).c_str()
 		);
 		return false;
@@ -1908,7 +1908,7 @@ bool cLuaState::CheckParamFunctionOrNil(int a_StartParam, int a_EndParam)
 		lua_Debug entry;
 		VERIFY(lua_getstack(m_LuaState, 0,   &entry));
 		VERIFY(lua_getinfo (m_LuaState, "n", &entry));
-		luaL_error(m_LuaState, "Error in function '%s' parameter #%d. Function expected, got %s",
+		luaL_error(m_LuaState, "函数 '%s' 参数 #%d 中的错误。函数预期，得到 %s",
 			(entry.name != nullptr) ? entry.name : "?", i, GetTypeText(i).c_str()
 		);
 		return false;
@@ -1938,7 +1938,7 @@ bool cLuaState::CheckParamVector3(int a_StartParam, int a_EndParam)
 			continue;
 		}
 
-		ApiParamError(fmt::format(FMT_STRING("Failed to read parameter #{}. Vector3 expected, got {}"), i, GetTypeText(i)));
+		ApiParamError(fmt::format(FMT_STRING("无法读取参数 #{}。Vector3 预期，得到 {}"), i, GetTypeText(i)));
 		return false;
 	}
 	return true;
@@ -1970,7 +1970,7 @@ bool cLuaState::CheckParamUUID(int a_StartParam, int a_EndParam)
 
 		if (!tolua_iscppstring(m_LuaState, i, 0, &err))
 		{
-			ApiParamError(fmt::format(FMT_STRING("Failed to read parameter #{}. UUID expected, got {}"), i, GetTypeText(i)));
+			ApiParamError(fmt::format(FMT_STRING("无法读取参数 #{}。预期的 UUID，得到 {}"), i, GetTypeText(i)));
 			return false;
 		}
 
@@ -1978,7 +1978,7 @@ bool cLuaState::CheckParamUUID(int a_StartParam, int a_EndParam)
 		GetStackValue(i, tempStr);
 		if (!tempUUID.FromString(tempStr))
 		{
-			ApiParamError(fmt::format(FMT_STRING("Failed to read parameter #{}. UUID expected, got non-UUID string:\n\t\"{}\""), i, tempStr));
+			ApiParamError(fmt::format(FMT_STRING("无法读取参数 #{}。预期的 UUID，得到非 UUID 字符串：\n\t\"{}\""), i, tempStr));
 			return false;
 		}
 	}
@@ -2000,7 +2000,7 @@ bool cLuaState::CheckParamEnd(int a_Param)
 	lua_Debug entry;
 	VERIFY(lua_getstack(m_LuaState, 0,   &entry));
 	VERIFY(lua_getinfo (m_LuaState, "n", &entry));
-	AString ErrMsg = fmt::format(FMT_STRING("#ferror in function '{}': Too many arguments."), (entry.name != nullptr) ? entry.name : "?");
+	AString ErrMsg = fmt::format(FMT_STRING("函数 '{}' 中的 #ferror：参数过多。"), (entry.name != nullptr) ? entry.name : "?");
 	tolua_error(m_LuaState, ErrMsg.c_str(), &tolua_err);
 	return false;
 }
