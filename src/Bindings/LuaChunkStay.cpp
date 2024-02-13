@@ -29,7 +29,7 @@ bool cLuaChunkStay::AddChunks(const cLuaState::cStackTable & a_ChunkCoordsTable)
 		{
 			if (!lua_istable(a_LuaState, -1))
 			{
-				LOGWARNING("%s: Element #%d is not a table (got %s). Ignoring the element.",
+				LOGWARNING("%s: 元素 #%d 不是表（得到 %s）。忽略元素。",
 					__FUNCTION__, a_Index, lua_typename(a_LuaState, -1)
 				);
 				a_LuaState.LogStackTrace();
@@ -44,7 +44,7 @@ bool cLuaChunkStay::AddChunks(const cLuaState::cStackTable & a_ChunkCoordsTable)
 	// If there are no chunks, log a warning and return failure:
 	if (m_Chunks.empty())
 	{
-		LOGWARNING("%s: No valid chunk coords.", __FUNCTION__);
+		LOGWARNING("%s：没有有效的块坐标。", __FUNCTION__);
 		a_ChunkCoordsTable.GetLuaState().LogStackTrace();
 		return false;
 	}
@@ -63,7 +63,7 @@ void cLuaChunkStay::AddChunkCoord(cLuaState & L, int a_Index)
 	int NumCoords = luaL_getn(L, -1);
 	if (NumCoords != 2)
 	{
-		LOGWARNING("%s: Element #%d doesn't contain 2 coords (got %d). Ignoring the element.",
+		LOGWARNING("%s：元素 #%d 不包含 2 个坐标（得到 %d）。忽略元素。",
 			__FUNCTION__, a_Index, NumCoords
 		);
 		return;
@@ -81,7 +81,7 @@ void cLuaChunkStay::AddChunkCoord(cLuaState & L, int a_Index)
 	{
 		if ((itr->m_ChunkX == ChunkX) && (itr->m_ChunkZ == ChunkZ))
 		{
-			LOGWARNING("%s: Element #%d is a duplicate, ignoring it.",
+			LOGWARNING("%s：元素 #%d 是重复的，忽略它。",
 				__FUNCTION__, a_Index
 			);
 			return;
