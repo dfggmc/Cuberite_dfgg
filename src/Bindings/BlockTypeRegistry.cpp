@@ -64,7 +64,7 @@ void BlockInfo::setHint(const AString & aHintKey, const AString & aHintValue)
 	auto itrC = m_HintCallbacks.find(aHintKey);
 	if (itrC != m_HintCallbacks.end())
 	{
-		LOGINFO("Setting a static hint %s for block type %s, but there's already a callback for that hint. The static hint will be ignored.",
+		LOGINFO("为块类型 %s 设置静态提示 %s，但已经有针对该提示的回调。静态提示将被忽略。",
 			aHintKey.c_str(), m_BlockTypeName.c_str()
 		);
 	}
@@ -212,7 +212,7 @@ AString BlockTypeRegistry::AlreadyRegisteredException::message(
 )
 {
 	return fmt::format(
-		FMT_STRING("Attempting to register BlockTypeName {} from plugin {}, while it is already registered in plugin {}"),
+		FMT_STRING("尝试从插件 {} 注册 BlockTypeName {}，而它已经在插件 {} 中注册"),
 		aNewRegistration->blockTypeName(),
 		aNewRegistration->pluginName(),
 		aPreviousRegistration->pluginName()
@@ -232,7 +232,7 @@ BlockTypeRegistry::NotRegisteredException::NotRegisteredException(
 	const AString & aHintValue
 ):
 	Super(fmt::format(
-		FMT_STRING("Attempting to set a hint of nonexistent BlockTypeName.\n\tBlockTypeName = {}\n\tHintKey = {}\n\tHintValue = {}"),
+		FMT_STRING("尝试设置不存在的 BlockTypeName 的提示。\n\tBlockTypeName = {}\n\tHintKey = {}\n\tHintValue = {}"),
 		aBlockTypeName,
 		aHintKey,
 		aHintValue
