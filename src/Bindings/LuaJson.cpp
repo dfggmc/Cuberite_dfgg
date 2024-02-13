@@ -259,7 +259,7 @@ static Json::Value JsonSerializeValue(cLuaState & a_LuaState)
 		}
 		default:
 		{
-			LOGD("Attempting to serialize an unhandled Lua value type: %d", lua_type(a_LuaState, -1));
+			LOGD("尝试序列化未处理的 Lua 值类型： %d", lua_type(a_LuaState, -1));
 			return Json::Value(Json::nullValue);
 		}
 	}
@@ -289,7 +289,7 @@ static int tolua_cJson_Parse(lua_State * a_LuaState)
 	AString input;
 	if (!L.GetStackValue(2, input))
 	{
-		LOGWARNING("cJson:Parse(): Cannot read input string");
+		LOGWARNING("cJson:Parse()：无法读取输入字符串");
 		L.LogStackTrace();
 		return 0;
 	}
@@ -299,7 +299,7 @@ static int tolua_cJson_Parse(lua_State * a_LuaState)
 	AString ParseError;
 	if (!JsonUtils::ParseString(input, root, &ParseError))
 	{
-		L.Push(cLuaState::Nil, fmt::format(FMT_STRING("Parsing Json failed: {}"), ParseError));
+		L.Push(cLuaState::Nil, fmt::format(FMT_STRING("解析 Json 失败： {}"), ParseError));
 		return 2;
 	}
 
@@ -339,7 +339,7 @@ static int tolua_cJson_Serialize(lua_State * a_LuaState)
 	{
 		lua_pushnil(L);
 		L.Push(fmt::format(
-			FMT_STRING("Cannot serialize into Json, value \"{}\" caused an error \"{}\""),
+			FMT_STRING("无法序列化为 Json，值 \"{}\" 导致错误 \"{}\""),
 			exc.GetValueName(), exc.what()
 		));
 		return 2;
@@ -367,7 +367,7 @@ static int tolua_cJson_Serialize(lua_State * a_LuaState)
 		Json::Value invalid;
 		if (!builder.validate(&invalid))
 		{
-			LOGINFO("cJson:Serialize(): detected invalid settings:");
+			LOGINFO("cJson:Serialize(): 检测到无效设置：");
 			for (const auto & n: invalid.getMemberNames())
 			{
 				LOGINFO("  \"%s\" (\"%s\")", n.c_str(), invalid[n].asCString());
