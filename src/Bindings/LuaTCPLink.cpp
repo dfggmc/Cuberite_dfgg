@@ -180,7 +180,7 @@ AString cLuaTCPLink::StartTLSClient(
 			auto res = ownCert->Parse(a_OwnCertData.data(), a_OwnCertData.size());
 			if (res != 0)
 			{
-				return fmt::format(FMT_STRING("Cannot parse client certificate: -0x{:x}"), -res);
+				return fmt::format(FMT_STRING("无法解析客户端证书：-0x{:x}"), -res);
 			}
 		}
 		cCryptoKeyPtr ownPrivKey;
@@ -190,7 +190,7 @@ AString cLuaTCPLink::StartTLSClient(
 			auto res = ownPrivKey->ParsePrivate(a_OwnPrivKeyData.data(), a_OwnPrivKeyData.size(), a_OwnPrivKeyPassword);
 			if (res != 0)
 			{
-				return fmt::format(FMT_STRING("Cannot parse client private key: -0x{:x}"), -res);
+				return fmt::format(FMT_STRING("无法解析客户端私钥：-0x{:x}"), -res);
 			}
 		}
 
@@ -201,7 +201,7 @@ AString cLuaTCPLink::StartTLSClient(
 			auto res = trustedRootCAs->Parse(a_TrustedRootCAs.data(), a_TrustedRootCAs.size());
 			if (res != 0)
 			{
-				return fmt::format("Cannot parse trusted root CAs: {}", res);
+				return fmt::format("无法分析受信任的根 CA：{}", res);
 			}
 		}
 		return link->StartTLSClient(ownCert, ownPrivKey, trustedRootCAs);
@@ -228,13 +228,13 @@ AString cLuaTCPLink::StartTLSServer(
 	int res = OwnCert->Parse(a_OwnCertData.data(), a_OwnCertData.size());
 	if (res != 0)
 	{
-		return fmt::format(FMT_STRING("Cannot parse server certificate: -0x{:x}"), -res);
+		return fmt::format(FMT_STRING("无法解析服务器证书：-0x{:x}"), -res);
 	}
 	auto OwnPrivKey = std::make_shared<cCryptoKey>();
 	res = OwnPrivKey->ParsePrivate(a_OwnPrivKeyData.data(), a_OwnPrivKeyData.size(), a_OwnPrivKeyPassword);
 	if (res != 0)
 	{
-		return fmt::format(FMT_STRING("Cannot parse server private key: -0x{:x}"), -res);
+		return fmt::format(FMT_STRING("无法解析服务器私钥：-0x{:x}"), -res);
 	}
 
 		return link->StartTLSServer(OwnCert, OwnPrivKey, a_StartTLSData);
