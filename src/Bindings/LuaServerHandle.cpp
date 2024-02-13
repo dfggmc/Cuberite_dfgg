@@ -132,7 +132,7 @@ cTCPLink::cCallbacksPtr cLuaServerHandle::OnIncomingConnection(const AString & a
 		!LinkCallbacks->IsValid()
 	)
 	{
-		LOGINFO("cNetwork server (port %d) OnIncomingConnection callback failed. Dropping connection.", m_Port);
+		LOGINFO("网络服务器（端口 %d）OnIncomingConnection 回调失败。断开连接。", m_Port);
 		return nullptr;
 	}
 
