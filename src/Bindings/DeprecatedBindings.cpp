@@ -277,7 +277,7 @@ static int tolua_AllToLua_StringToMobType00(lua_State* tolua_S)
 		tolua_pushcppstring(LuaState, a_MobString);
 	}
 
-	LOGWARNING("Warning in function call 'StringToMobType': StringToMobType() is deprecated. Please use cMonster:StringToMobType()");
+	LOGWARNING("函数调用“StringToMobType”中的警告：StringToMobType() 已弃用。请使用 cMonster：StringToMobType()");
 	LuaState.LogStackTrace(0);
 	return 2;
 
@@ -304,7 +304,7 @@ static int tolua_cBlockInfo_GetPlaceSound(lua_State * tolua_S)
 	}
 
 	L.Push("");
-	LOGWARNING("cBlockInfo:GetPlaceSound() is deprecated");
+	LOGWARNING("cBlockInfo：GetPlaceSound() 已弃用");
 	L.LogStackTrace(0);
 	return 1;
 }
@@ -329,7 +329,7 @@ static int tolua_get_cItem_m_Lore(lua_State * tolua_S)
 
 	L.Push(LoreString);
 
-	LOGWARNING("cItem.m_Lore is deprecated, use cItem.m_LoreTable instead");
+	LOGWARNING("cItem.m_Lore已弃用，请改用cItem.m_LoreTable");
 	L.LogStackTrace(0);
 	return 1;
 }
@@ -356,7 +356,7 @@ static int tolua_set_cItem_m_Lore(lua_State * tolua_S)
 
 	Self->m_LoreTable = StringSplit(LoreString, "`");
 
-	LOGWARNING("cItem.m_Lore is deprecated, use cItem.m_LoreTable instead");
+	LOGWARNING("cItem.m_Lore已弃用，请改用cItem.m_LoreTable");
 	L.LogStackTrace(0);
 	return 0;
 }
@@ -381,14 +381,14 @@ static int tolua_cNoteEntity_GetPitch(lua_State * tolua_S)
 
 	if (!LuaState.GetStackValues(1, Self))
 	{
-		tolua_error(LuaState, "Failed to read parameters", nullptr);
+		tolua_error(LuaState, "无法读取参数", nullptr);
 	}
 	if (Self == nullptr)
 	{
-		tolua_error(LuaState, "invalid 'self' in function 'GetPitch'", nullptr);
+		tolua_error(LuaState, "函数'GetPitch'中的'self'无效", nullptr);
 	}
 	LuaState.Push(Self->GetNote());
-	LOGWARNING("Warning: 'cNoteEntity:GetPitch' function is deprecated. Please use 'cNoteEntity:GetNote' instead.");
+	LOGWARNING("警告：'cNoteEntity:GetPitch'函数已弃用。请改用'cNoteEntity:GetNote'。");
 	LuaState.LogStackTrace(0);
 	return 1;
 }
@@ -413,15 +413,15 @@ static int tolua_cNoteEntity_IncrementPitch(lua_State * tolua_S)
 
 	if (!LuaState.GetStackValues(1, Self))
 	{
-		tolua_error(LuaState, "Failed to read parameters", nullptr);
+		tolua_error(LuaState, "无法读取参数", nullptr);
 	}
 	if (Self == nullptr)
 	{
-		tolua_error(LuaState, "invalid 'self' in function 'SetPitch'", nullptr);
+		tolua_error(LuaState, "函数'SetPitch'中的'self'无效", nullptr);
 	}
 
 	Self->IncrementNote();
-	LOGWARNING("Warning: 'cNoteEntity:IncrementPitch' function is deprecated. Please use 'cNoteEntity:IncrementNote' instead.");
+	LOGWARNING("警告：'cNoteEntity:IncrementPitch'函数已弃用。请改用'cNoteEntity:IncrementNote'。");
 	LuaState.LogStackTrace(0);
 	return 1;
 }
@@ -448,15 +448,15 @@ static int tolua_cNoteEntity_SetPitch(lua_State * tolua_S)
 
 	if (!LuaState.GetStackValues(1, Self, Note))
 	{
-		tolua_error(LuaState, "Failed to read parameters", nullptr);
+		tolua_error(LuaState, "无法读取参数", nullptr);
 	}
 	if (Self == nullptr)
 	{
-		tolua_error(LuaState, "invalid 'self' in function 'SetPitch'", nullptr);
+		tolua_error(LuaState, "函数'SetPitch'中的'self'无效", nullptr);
 	}
 
 	Self->SetNote(static_cast<unsigned char>(Note % 25));
-	LOGWARNING("Warning: 'cNoteEntity:SetPitch' function is deprecated. Please use 'cNoteEntity:SetNote' instead.");
+	LOGWARNING("警告：'cNoteEntity:SetPitch'函数已弃用。请改用'cNoteEntity：SetNote'。");
 	LuaState.LogStackTrace(0);
 	return 1;
 }
@@ -496,7 +496,7 @@ static int tolua_cWorld_SetSignLines(lua_State * tolua_S)
 		#ifndef TOLUA_RELEASE
 		if (self == nullptr)
 		{
-			tolua_error(LuaState, "invalid 'self' in function 'UpdateSign'", nullptr);
+			tolua_error(LuaState, "函数'UpdateSign'中的'self'无效", nullptr);
 		}
 		#endif
 		{
@@ -504,7 +504,7 @@ static int tolua_cWorld_SetSignLines(lua_State * tolua_S)
 			tolua_pushboolean(LuaState, res ? 1 : 0);
 		}
 	}
-	LOGWARNING("Warning in function call 'UpdateSign': UpdateSign() is deprecated. Please use SetSignLines()");
+	LOGWARNING("函数调用'UpdateSign'中的警告：UpdateSign() 已弃用。请使用 SetSignLines()");
 	LuaState.LogStackTrace(0);
 	return 1;
 }
@@ -522,13 +522,13 @@ static int tolua_cWorld_GrowTree(lua_State * a_LuaState)
 	if (lua_isnumber(LuaState, 2))
 	{
 		// This is the obsolete signature, warn and translate:
-		LOGWARNING("Warning: cWorld:GrowTree function expects Vector3i-based coords rather than int-based coords. Emulating old-style call.");
+		LOGWARNING("警告：cWorld:GrowTree 函数需要基于 Vector3i 的坐标，而不是基于 int 的坐标。模拟老式通话。");
 		LuaState.LogStackTrace(0);
 		cWorld * Self = nullptr;
 		int BlockX, BlockY, BlockZ;
 		if (!LuaState.GetStackValues(1, Self, BlockX, BlockY, BlockZ))
 		{
-			return LuaState.ApiParamError("Failed to read int-based coord parameters");
+			return LuaState.ApiParamError("无法读取基于 int 的坐标参数");
 		}
 		LuaState.Push(Self->GrowTree({BlockX, BlockY, BlockZ}));
 		return 1;
@@ -539,7 +539,7 @@ static int tolua_cWorld_GrowTree(lua_State * a_LuaState)
 	Vector3i BlockPos;
 	if (!LuaState.GetStackValues(1, Self, BlockPos))
 	{
-		return LuaState.ApiParamError("Failed to read Vector3i-based coord parameters");
+		return LuaState.ApiParamError("无法读取基于 Vector3i 的坐标参数");
 	}
 	LuaState.Push(Self->GrowTree(BlockPos));
 	return 1;
@@ -558,13 +558,13 @@ static int tolua_cWorld_GrowTreeByBiome(lua_State * a_LuaState)
 	if (lua_isnumber(LuaState, 2))
 	{
 		// This is the obsolete signature, warn and translate:
-		LOGWARNING("Warning: cWorld:GrowTreeByBiome function expects Vector3i-based coords rather than int-based coords. Emulating old-style call.");
+		LOGWARNING("警告：cWorld:GrowTreeByBiome 函数需要基于 Vector3i 的坐标，而不是基于 int 的坐标。模拟老式通话。");
 		LuaState.LogStackTrace(0);
 		cWorld * Self = nullptr;
 		int BlockX, BlockY, BlockZ;
 		if (!LuaState.GetStackValues(1, Self, BlockX, BlockY, BlockZ))
 		{
-			return LuaState.ApiParamError("Failed to read int-based coord parameters");
+			return LuaState.ApiParamError("无法读取基于 int 的坐标参数");
 		}
 		LuaState.Push(Self->GrowTreeByBiome({BlockX, BlockY, BlockZ}));
 		return 1;
@@ -575,7 +575,7 @@ static int tolua_cWorld_GrowTreeByBiome(lua_State * a_LuaState)
 	Vector3i BlockPos;
 	if (!LuaState.GetStackValues(1, Self, BlockPos))
 	{
-		return LuaState.ApiParamError("Failed to read Vector3i-based coord parameters");
+		return LuaState.ApiParamError("无法读取基于 Vector3i 的坐标参数");
 	}
 	LuaState.Push(Self->GrowTreeByBiome(BlockPos));
 	return 1;
@@ -594,13 +594,13 @@ static int tolua_cWorld_GrowTreeFromSapling(lua_State * a_LuaState)
 	if (lua_isnumber(LuaState, 2))
 	{
 		// This is the obsolete signature, warn and translate:
-		LOGWARNING("Warning: cWorld:GrowTreeFromSapling function expects Vector3i-based coords rather than int-based coords. Emulating old-style call.");
+		LOGWARNING("警告：cWorld:GrowTreeFromSapling 函数需要基于 Vector3i 的坐标，而不是基于 int 的坐标。模拟老式通话。");
 		LuaState.LogStackTrace(0);
 		cWorld * Self = nullptr;
 		int BlockX, BlockY, BlockZ;
 		if (!LuaState.GetStackValues(1, Self, BlockX, BlockY, BlockZ))
 		{
-			return LuaState.ApiParamError("Failed to read int-based coord parameters");
+			return LuaState.ApiParamError("无法读取基于 int 的坐标参数");
 		}
 		LuaState.Push(Self->GrowTreeFromSapling({BlockX, BlockY, BlockZ}));
 		return 1;
@@ -611,12 +611,12 @@ static int tolua_cWorld_GrowTreeFromSapling(lua_State * a_LuaState)
 	Vector3i BlockPos;
 	if (!LuaState.GetStackValues(1, Self, BlockPos))
 	{
-		return LuaState.ApiParamError("Failed to read Vector3i-based coord parameters");
+		return LuaState.ApiParamError("无法读取基于 Vector3i 的坐标参数");
 	}
 	if (lua_isnumber(LuaState, 3))
 	{
 		// There's an extra parameter, the obsolete SaplingMeta
-		LOGWARNING("Warning: cWorld:GrowTreeFromSapling function no longer has the SaplingMeta parameter. Ignoring it now.");
+		LOGWARNING("警告：cWorld:GrowTreeFromSapling 函数不再具有 SaplingMeta 参数。现在忽略它。");
 		LuaState.LogStackTrace(0);
 	}
 	LuaState.Push(Self->GrowTreeFromSapling(BlockPos));
@@ -648,14 +648,14 @@ static int tolua_cWorld_SetNextBlockTick(lua_State * tolua_S)
 
 	if (!LuaState.GetStackValues(1, Self, BlockX, BlockY, BlockZ))
 	{
-		tolua_error(LuaState, "Failed to read parameters", nullptr);
+		tolua_error(LuaState, "无法读取参数", nullptr);
 	}
 	if (Self == nullptr)
 	{
 		tolua_error(LuaState, "invalid 'self' in function 'SetNextBlockTick'", nullptr);
 	}
 	Self->SetNextBlockToTick({BlockX, BlockY, BlockZ});
-	LOGWARNING("Warning: 'cWorld:SetNextBlockTick' function is deprecated. Please use 'cWorld:SetNextBlockToTick' instead.");
+	LOGWARNING("警告：'cWorld:SetNextBlockTick'函数已弃用。请改用'cWorld:SetNextBlockToTick'。");
 	LuaState.LogStackTrace(0);
 	return 1;
 }
